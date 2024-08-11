@@ -1,0 +1,29 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/">
+	<channel>
+		<title>Radio Rumble</title>
+		<link>https://radio.rumble.nyc</link>
+		<atom:link href="https://radio.rumble.nyc/feed.xml" ref="self" />
+		<itunes:image href="/images/radio-rumble-nyc-logo-1.png" />
+		<item>
+			<title>house_with_benji_20240809</title>
+			<pubDate>2024-08-10T14:45:45-05:00</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/2024/house_with_benji_20240809</guid>
+			<enclosure url="https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" />
+			<media:content url="https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" />
+		</item>
+		<item>
+			<title>rumble.nyc-radio-episode-1-liquid-dnb</title>
+			<pubDate>2023-10-07T19:09:54-05:00</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb</guid>
+			<enclosure url="https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" />
+			<media:content url="https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" />
+		</item>
+		<item>
+			<title>rumble-nyc-radio-episode-02-uk-garage-raw</title>
+			<pubDate>2024-08-10T18:27:24-05:00</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw</guid>
+			<enclosure url="https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" />
+			<media:content url="https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" />
+		</item>
+	</channel>
+</rss>

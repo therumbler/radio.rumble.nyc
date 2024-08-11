@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Dela+Gothic+One">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Assistant">
+	<title>Radio Rumble</title>
+	<link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+	<link rel="alternate" type="application/feed+json" title="JSON Feed for Radio Rumble" href="feed.json" />
+	<link rel="alternate" type="application/rss+xml" title="RSS/XML Feed for Radio Rumble" href="feed.xml" />
+	<style>
+		body {
+			font-family: "Assistant";
+			background: black;
+			color:white;
+		}
+		h1 {
+			font-family: "Dela Gothic One";
+		}
+		#main {
+			margin-right: auto;
+			margin-left: auto;
+			max-width: 720px;
+		}
+		date {
+			display:block;
+		}
+		audio {
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div id="main">
+		<h1>rumble.nyc radio</h1>
+		<h2>Episode 3: 114 BPM House</h2>
+		<date date="2024-08-09T19:00:00Z">2024-08-09</date>
+		<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://f002.backblazeb2.com/file/rumble-nyc-radio/images/house_with_benji_20240809_logo-v2.png">
+			<source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" />
+		</audio>
+		<br/>
+		<h2>Episode 2: UK Garage</h2>
+		<date date="2023-11-29T19:00:00Z">2023-11-29</date>
+		<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://f002.backblazeb2.com/file/rumble-nyc-radio/images/radio-rumble-nyc-ep-2-uk garage.png">
+			<source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav"/>
+			<source src="https://www.dopemix.es/audio/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav"/>
+		</audio>
+		<br/>
+		<h2>Episode 1: Liquid D&amp;B</h2>
+		<date date="2023-10-06T19:00:00Z">2023-10-06</date>
+		<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://f002.backblazeb2.com/file/rumble-nyc-radio/images/rumble-nyc-radio-episode-one.png">
+			<source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav"/>
+			<source src="https://www.dopemix.es/audio/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav"/>
+		</audio>
+	</div>
+	 <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+</body>
+</html>

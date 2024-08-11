@@ -1,0 +1,45 @@
+{
+  "version": "https://jsonfeed.org/version/1.1",
+  "title": "Radio Rumble",
+  "home_page_url": "https://radio.rumble.nyc",
+  "feed_url": "https://radio.rumble.nyc/feed.json",
+  "items": [
+    {
+      "id": "https://radio.rumble.nyc/2024/house_with_benji_20240809",
+      "url": "https://radio.rumble.nyc/2024/house_with_benji_20240809",
+      "title": "house_with_benji_20240809",
+      "date_published": "2024-08-10T14:45:45-05:00",
+      "attachments": [
+        {
+          "url": "https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3",
+          "mime_type": "audio/mpeg"
+        }
+      ]
+    },
+    {
+      "id": "https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb",
+      "url": "https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb",
+      "title": "rumble.nyc-radio-episode-1-liquid-dnb",
+      "date_published": "2023-10-07T19:09:54-05:00",
+      "attachments": [
+        {
+          "url": "https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav",
+          "mime_type": "audio/x-wav"
+        }
+      ]
+    },
+    {
+      "id": "https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw",
+      "url": "https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw",
+      "title": "rumble-nyc-radio-episode-02-uk-garage-raw",
+      "date_published": "2024-08-10T18:27:24-05:00",
+      "attachments": [
+        {
+          "url": "https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav",
+          "mime_type": "audio/x-wav"
+        }
+      ]
+    }
+  ],
+  "icon": "/images/radio-rumble-nyc-logo-1.png"
+}
