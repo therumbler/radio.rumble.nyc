@@ -4,7 +4,7 @@ This is a simple Python project which builds RSS XML and [JSON feeds](https://ww
 
 It uses the [uv package manager](https://docs.astral.sh/uv/).
 
-## How-To
+## How To
 
 1. install uv [per the instructions](https://docs.astral.sh/uv/#installation)
 
@@ -20,7 +20,7 @@ uv venv
 uv sync
 ```
 
-3. Create a .env file with the following S3 variables
+3. Create a `.env` file with the following S3 variables
 
 ```
 AWS_ENDPOINT_URL=https://[endpoint]
