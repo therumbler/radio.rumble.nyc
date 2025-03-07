@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 """build feed objects for radio.rumble.nyc"""
 from datetime import datetime
+import email
 import xml.etree.ElementTree as ET
 import logging
 import json
 import os
 import re
+from typing import List, Optional
 import sys
 
 import boto3
+from botocore.exceptions import ClientError
+
 
 logger = logging.getLogger(__name__)
 
 
 class FeedBuilder:
     """Builds XML and JSON feeds for radio.rumble.nyc"""
+
+    BASE_URL = "https://radio.rumble.nyc"
 
     def __init__(self):
         self._bucket_name = "rumble-nyc-radio"
@@ -42,12 +48,21 @@ class FeedBuilder:
         logger.error("no mime_type found for %s", ext)
         return "unknown"
 
-    @classmethod
-    def _filepath_to_attachment(cls, filepath):
-        url = cls._filepath_to_attachment_url(filepath)
+    def _file_size_from_s3(self, filepath):
+        resp = self._s3.Object(self._bucket_name, filepath)
+        return resp.content_length
+
+    def _filepath_to_attachment(self, filepath):
+        url = self._filepath_to_attachment_url(filepath)
         audio_file_ext = os.path.splitext(filepath)[1]
         # url = f"{item_url}{audio_file_ext}"
-        return [{"url": url, "mime_type": cls._get_mime_type_from_ext(audio_file_ext)}]
+        return [
+            {
+                "url": url,
+                "mime_type": self._get_mime_type_from_ext(audio_file_ext),
+                "size_in_bytes": self._file_size_from_s3(filepath),
+            }
+        ]
 
     def _last_modified_from_s3(self, filepath):
         resp = self._s3.Object(self._bucket_name, filepath)
@@ -67,6 +82,51 @@ class FeedBuilder:
             date_published = creation_time.strftime("%Y-%m-%dT%H:%M:%S-05:00")
         return date_published
 
+    @classmethod
+    def _filepath_to_episode_number_words(cls, filepath) -> Optional[int]:
+        number_words: List[str] = [
+            "one",
+            "two",
+            "three",
+            "four",
+            "five",
+            "six",
+            "seven",
+            "eight",
+            "nine",
+            "ten",
+        ]
+        for w in number_words:
+            pattern = rf"ep.+\-({w})"
+            match = re.search(pattern, filepath)
+            if match:
+                word = match.group(1)
+                return number_words.index(word) + 1
+        return None
+
+    @classmethod
+    def _filepath_to_episode_number(cls, filepath) -> Optional[int]:
+        episode_number = cls._filepath_to_episode_number_words(filepath)
+        if episode_number:
+            return episode_number
+        pattern = r"\-(\d+)"
+        match = re.search(pattern, filepath)
+        if match:
+            return int(match.group(1))
+        return None
+
+    def _match_audio_to_image_filepath(self, audio_file_path, image_filepath):
+        image_episode_number = self._filepath_to_episode_number(image_filepath)
+        audio_episode_number = self._filepath_to_episode_number(audio_file_path)
+        return image_episode_number == audio_episode_number
+
+    def _audio_filepath_to_image(self, audio_filepath):
+        for dir_name, _dirs, files in os.walk("./images"):
+            for filename in files:
+                image_filepath = f"{dir_name}/{filename}"
+                if self._match_audio_to_image_filepath(audio_filepath, image_filepath):
+                    return f"{self.BASE_URL}/{image_filepath.replace("./", "")}"
+
     def _audio_filepath_to_json_feed_item(self, filepath):
         slug = self._audio_filepath_to_slug(filepath)
         if not slug:
@@ -77,12 +137,14 @@ class FeedBuilder:
 
         item_url = self._filepath_to_item_url(filepath)
         attachments = self._filepath_to_attachment(filepath)
+        image = self._audio_filepath_to_image(filepath)
         return {
             "id": item_url,
             "url": item_url,
             "title": slug,
             "date_published": date_published,
             "attachments": attachments,
+            "image": image,
         }
 
     @classmethod
@@ -100,12 +162,12 @@ class FeedBuilder:
         episode_path = re.search(r"audio\/(.*)\.", filepath).group(1)
 
         logger.debug("episode_path: %s", episode_path)
-        return f"https://radio.rumble.nyc/{episode_path}"
+        return f"{cls.BASE_URL}/{episode_path}"
 
     @classmethod
     def _filepath_to_attachment_url(cls, filepath):
         public_path = re.search(r"audio\/..*", filepath).group()
-        return f"https://radio.rumble.nyc/{public_path}"
+        return f"{cls.BASE_URL}/{public_path}"
 
     @classmethod
     def _filter_audio_s3_objects(cls, o):
@@ -118,7 +180,6 @@ class FeedBuilder:
     def _get_audio_from_s3(self):
         objects = self._bucket.objects.limit(400)
 
-        # return [o for o in objects if o.key.startswith("audio/")]
         return list(filter(self._filter_audio_s3_objects, objects))
 
     def _get_items_from_s3(self):
@@ -147,13 +208,23 @@ class FeedBuilder:
         feed = {
             "version": "https://jsonfeed.org/version/1.1",
             "title": "Radio Rumble",
-            "home_page_url": "https://radio.rumble.nyc",
-            "feed_url": "https://radio.rumble.nyc/feed.json",
+            "description": "an irregular DJ show, mostly about house music",
+            "home_page_url": self.BASE_URL,
+            "feed_url": f"{self.BASE_URL}/feed.json",
             "items": items,
-            "icon": "/images/radio-rumble-nyc-logo-1.png",
+            "icon": f"{self.BASE_URL}/images/radio-rumble-nyc-logo-1.png",
         }
 
         return feed
+
+    @classmethod
+    def _iso_date_to_rfc822(cls, iso_datetime):
+        try:
+            dt = datetime.strptime(iso_datetime, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError:
+            dt = datetime.strptime(iso_datetime, "%Y-%m-%dT%H:%M:%S-05:00")
+        # Convert to RFC-822 format
+        return email.utils.format_datetime(dt)
 
     @classmethod
     def _json_feed_item_to_xml_item(cls, json_item):
@@ -161,7 +232,7 @@ class FeedBuilder:
         title = ET.SubElement(item, "title")
         title.text = json_item["title"]
         pub_date = ET.SubElement(item, "pubDate")
-        pub_date.text = json_item["date_published"]
+        pub_date.text = cls._iso_date_to_rfc822(json_item["date_published"])
         guid = ET.SubElement(item, "guid")
         guid.text = json_item["id"]
         guid.attrib["isPermaLink"] = "false"
@@ -169,9 +240,11 @@ class FeedBuilder:
             enclosure = ET.SubElement(item, "enclosure")
             enclosure.attrib["url"] = att["url"]
             enclosure.attrib["type"] = att["mime_type"]
+            enclosure.attrib["length"] = str(att["size_in_bytes"])
             media_content = ET.SubElement(item, "media:content")
             media_content.attrib["url"] = att["url"]
             media_content.attrib["type"] = att["mime_type"]
+
         return item
 
     @classmethod
@@ -179,11 +252,14 @@ class FeedBuilder:
         channel = ET.Element("channel")
         title = ET.SubElement(channel, "title")
         title.text = json_feed["title"]
+        description = ET.SubElement(channel, "description")
+        description.text = json_feed["description"]
         link = ET.SubElement(channel, "link")
         link.text = json_feed["home_page_url"]
         atom_link = ET.SubElement(channel, "atom:link")
         atom_link.attrib["href"] = "https://radio.rumble.nyc/feed.xml"
-        atom_link.attrib["ref"] = "self"
+        atom_link.attrib["rel"] = "self"
+        atom_link.attrib["type"] = "application/rss+xml"
 
         itunes_image = ET.SubElement(channel, "itunes:image")
         itunes_image.attrib["href"] = json_feed["icon"]
@@ -219,12 +295,87 @@ class FeedBuilder:
 
         return json_feed
 
+    @classmethod
+    def _local_audio_filepath_to_s3_key(cls, local_filepath):
+        logger.info("local_filepath %s", local_filepath)
+
+    @classmethod
+    def _local_image_filepath_to_s3_key(cls, local_filepath):
+        logger.info("local_filepath %s", local_filepath)
+        return local_filepath.replace("./", "")
+
+    def _sync_audio_directory(self):
+        for dir_name, _dirs, files in os.walk("./audio"):
+            for filename in files:
+                local_filepath = f"{dir_name}/{filename}"
+                s3_key = self._local_audio_filepath_to_s3_key(local_filepath)
+
+    def _sync_image(self, filepath):
+        s3_key = self._local_image_filepath_to_s3_key(filepath)
+        obj = self._s3.Object(self._bucket_name, s3_key)
+
+        try:
+            _ = obj.checksum_sha256
+        except ClientError:
+            logger.info("object %s does not exist in s3", s3_key)
+            obj.upload_file(filepath)
+
+    def _sync_images_directory(self):
+        for dir_name, _dirs, files in os.walk("./images"):
+            for filename in files:
+                local_filepath = f"{dir_name}/{filename}"
+                self._sync_image(local_filepath)
+
+    @classmethod
+    def _filename_to_content_type(cls, filename):
+        ext = os.path.splitext(filename)[1].lower()
+        if ext in [".html"]:
+            return "text/html"
+        elif ext in [".json"]:
+            return "application/json"
+        elif ext in [".xml"]:
+            return "application/xml"
+        elif ext in [".png"]:
+            return "image/png"
+        elif ext in [".jpg", ".jpeg"]:
+            return "image/jpeg"
+        elif ext in [".gif"]:
+            return "image/gif"
+        elif ext in [".css"]:
+            return "text/css"
+        elif ext in [".js"]:
+            return "application/javascript"
+        else:
+            return "application/octet-stream"
+
+    def _sync_web(self):
+        """send web elements to s3"""
+        items = ["index.html", "feed.json", "feed.xml"]
+
+        for filepath in items:
+            obj = self._s3.Object(self._bucket_name, filepath)
+            logger.info("uploading %s ...", filepath)
+            content_type = self._filename_to_content_type(filepath)
+            obj.upload_file(filepath, ExtraArgs={"ContentType": content_type})
+            # try:
+            #     checksum = obj.checksum_type
+            #     logger.info("checksum %s", checksum)
+            #     logger.info(obj.metadata)
+            # except ClientError:
+            #
+            #     # obj.upload_file(filepath)
+
+    def sync_with_s3(self):
+        # self._sync_images_directory()
+        self._sync_web()
+
 
 def main():
     """kick it all off"""
     logging.basicConfig(stream=sys.stdout, level="INFO")
     builder = FeedBuilder()
     feed = builder.build()
+    builder.sync_with_s3()
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-02-uk-garage-raw.wav"
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav"
 
