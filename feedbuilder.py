@@ -8,6 +8,7 @@ import json
 import os
 import re
 from typing import List, Optional
+from string import Template
 import sys
 
 import boto3
@@ -44,7 +45,7 @@ class FeedBuilder:
         if "wav" in ext:
             return "audio/x-wav"
         if "m4a" in ext or "aac" in ext:
-            return "mpeg/m4a"
+            return "audio/mp4"
         logger.error("no mime_type found for %s", ext)
         return "unknown"
 
@@ -116,9 +117,22 @@ class FeedBuilder:
         return None
 
     def _match_audio_to_image_filepath(self, audio_file_path, image_filepath):
+        logger.info("_match_audio_to_image_filepath")
         image_episode_number = self._filepath_to_episode_number(image_filepath)
-        audio_episode_number = self._filepath_to_episode_number(audio_file_path)
-        return image_episode_number == audio_episode_number
+        if image_episode_number:
+            logger.info("image_filepath %r", image_filepath)
+            audio_episode_number = self._filepath_to_episode_number(audio_file_path)
+            if image_episode_number == audio_episode_number:
+                return True
+
+        # try to use YYYYMMDD in the filepaths to match
+        logger.info("match by date")
+        audio_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", audio_file_path)
+        image_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", image_filepath)
+        if audio_date_match and image_date_match:
+            logger.info("they match %s %s!", audio_file_path, image_filepath)
+            return audio_date_match.group() == image_date_match.group()
+        return False
 
     def _audio_filepath_to_image(self, audio_filepath):
         for dir_name, _dirs, files in os.walk("./images"):
@@ -126,6 +140,20 @@ class FeedBuilder:
                 image_filepath = f"{dir_name}/{filename}"
                 if self._match_audio_to_image_filepath(audio_filepath, image_filepath):
                     return f"{self.BASE_URL}/{image_filepath.replace("./", "")}"
+
+    def _item_html(self, **item):
+
+        return f"""
+<div id="{item['id']}" class="json-feed-item">
+
+<h3>{item['title']}</h3>
+<audio controls class="video-js"  preload="metadata" data-setup='{{"fluid": true}}' poster="{item['image']}">
+			<source src="{item['attachments'][0]['url']}" type="{item['attachments'][0]['mime_type']}"/>
+		</audio>
+<p><{item.get('description','')}/p>
+
+</div>
+        """.strip()
 
     def _audio_filepath_to_json_feed_item(self, filepath):
         slug = self._audio_filepath_to_slug(filepath)
@@ -138,7 +166,7 @@ class FeedBuilder:
         item_url = self._filepath_to_item_url(filepath)
         attachments = self._filepath_to_attachment(filepath)
         image = self._audio_filepath_to_image(filepath)
-        return {
+        item = {
             "id": item_url,
             "url": item_url,
             "title": slug,
@@ -146,6 +174,9 @@ class FeedBuilder:
             "attachments": attachments,
             "image": image,
         }
+        item["content_html"] = self._item_html(**item)
+        logger.info("content_html: %s", item["content_html"])
+        return item
 
     @classmethod
     def _audio_filepath_to_slug(cls, filepath):
@@ -281,19 +312,36 @@ class FeedBuilder:
         ET.indent(rss, space="\t", level=0)
         return rss
 
-    def build(self):
+    def build(self, write_files: bool = False):
         """build feed objects"""
         json_feed = self._build_json_feed()
-        # return
+        rss = self._json_feed_to_rss_xml(json_feed)
+        html = self._json_feed_to_html(json_feed)
+        if write_files:
+            self._write_files(json_feed, rss, html)
+        return json_feed
+
+    def _write_files(self, json_feed, rss, html):
         logger.info("writing feed.json ...")
         with open("feed.json", "w", encoding="utf-8") as f:
             f.write(json.dumps(json_feed, indent=2))
 
-        rss = self._json_feed_to_rss_xml(json_feed)
         logger.info("writing feed.xml ...")
         ET.ElementTree(rss).write("feed.xml", encoding="utf-8")
 
+        logger.info("writing index.html ...")
+        with open("index.html", "w", encoding="utf-8") as f:
+            f.write(html)
         return json_feed
+
+    def _json_feed_to_html(self, json_feed) -> str:
+        previous_episodes_html = "\n".join(
+            [i["content_html"] for i in json_feed["items"]]
+        )
+        with open("templates/index.html.tmpl", encoding="utf-8") as f:
+            return Template(f.read()).safe_substitute(
+                previous_episodes=previous_episodes_html
+            )
 
     @classmethod
     def _local_audio_filepath_to_s3_key(cls, local_filepath):
@@ -315,10 +363,11 @@ class FeedBuilder:
         obj = self._s3.Object(self._bucket_name, s3_key)
 
         try:
-            _ = obj.checksum_sha256
+            _ = obj.checksum_sha1
         except ClientError:
             logger.info("object %s does not exist in s3", s3_key)
             obj.upload_file(filepath)
+            logger.info("upload_file complete %s", s3_key)
 
     def _sync_images_directory(self):
         for dir_name, _dirs, files in os.walk("./images"):
@@ -354,8 +403,9 @@ class FeedBuilder:
 
         for filepath in items:
             obj = self._s3.Object(self._bucket_name, filepath)
-            logger.info("uploading %s ...", filepath)
+
             content_type = self._filename_to_content_type(filepath)
+            logger.info("uploading %s  %s ...", content_type, filepath)
             obj.upload_file(filepath, ExtraArgs={"ContentType": content_type})
             # try:
             #     checksum = obj.checksum_type
@@ -366,15 +416,15 @@ class FeedBuilder:
             #     # obj.upload_file(filepath)
 
     def sync_with_s3(self):
-        # self._sync_images_directory()
-        self._sync_web()
+        self._sync_images_directory()
+        # self._sync_web()
 
 
 def main():
     """kick it all off"""
     logging.basicConfig(stream=sys.stdout, level="INFO")
     builder = FeedBuilder()
-    feed = builder.build()
+    # feed = builder.build(write_files=True)
     builder.sync_with_s3()
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-02-uk-garage-raw.wav"
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav"
