@@ -1,6 +1,7 @@
 {
   "version": "https://jsonfeed.org/version/1.1",
   "title": "Radio Rumble",
+  "description": "an irregular DJ show, mostly about house music",
   "home_page_url": "https://radio.rumble.nyc",
   "feed_url": "https://radio.rumble.nyc/feed.json",
   "items": [
@@ -12,9 +13,12 @@
       "attachments": [
         {
           "url": "https://radio.rumble.nyc/audio/2025/radio-rumble-episode-05-house.m4a",
-          "mime_type": "mpeg/m4a"
+          "mime_type": "audio/mp4",
+          "size_in_bytes": 42931494
         }
-      ]
+      ],
+      "image": "https://radio.rumble.nyc/images/radio-rumble-ep-5-house.png",
+      "content_html": "<div id=\"https://radio.rumble.nyc/2025/radio-rumble-episode-05-house\" class=\"json-feed-item\">\n\n<h3>radio-rumble-episode-05-house</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"https://radio.rumble.nyc/images/radio-rumble-ep-5-house.png\">\n\t\t\t<source src=\"https://radio.rumble.nyc/audio/2025/radio-rumble-episode-05-house.m4a\" type=\"audio/mp4\"/>\n\t\t</audio>\n<p></p>\n\n</div>"
     },
     {
       "id": "https://radio.rumble.nyc/2024/radio-rumble-04-house",
@@ -24,9 +28,12 @@
       "attachments": [
         {
           "url": "https://radio.rumble.nyc/audio/2024/radio-rumble-04-house.m4a",
-          "mime_type": "mpeg/m4a"
+          "mime_type": "audio/mp4",
+          "size_in_bytes": 47845453
         }
-      ]
+      ],
+      "image": "https://radio.rumble.nyc/images/Radio-Rumble-Ep-04-House-20240912.png",
+      "content_html": "<div id=\"https://radio.rumble.nyc/2024/radio-rumble-04-house\" class=\"json-feed-item\">\n\n<h3>radio-rumble-04-house</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"https://radio.rumble.nyc/images/Radio-Rumble-Ep-04-House-20240912.png\">\n\t\t\t<source src=\"https://radio.rumble.nyc/audio/2024/radio-rumble-04-house.m4a\" type=\"audio/mp4\"/>\n\t\t</audio>\n<p></p>\n\n</div>"
     },
     {
       "id": "https://radio.rumble.nyc/2024/house_with_benji_20240809",
@@ -36,9 +43,12 @@
       "attachments": [
         {
           "url": "https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3",
-          "mime_type": "audio/mpeg"
+          "mime_type": "audio/mpeg",
+          "size_in_bytes": 91144611
         }
-      ]
+      ],
+      "image": "https://radio.rumble.nyc/images/house_with_benji_20240809_logo-v2.png",
+      "content_html": "<div id=\"https://radio.rumble.nyc/2024/house_with_benji_20240809\" class=\"json-feed-item\">\n\n<h3>house_with_benji_20240809</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"https://radio.rumble.nyc/images/house_with_benji_20240809_logo-v2.png\">\n\t\t\t<source src=\"https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3\" type=\"audio/mpeg\"/>\n\t\t</audio>\n<p></p>\n\n</div>"
     },
     {
       "id": "https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw",
@@ -48,9 +58,12 @@
       "attachments": [
         {
           "url": "https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav",
-          "mime_type": "audio/x-wav"
+          "mime_type": "audio/x-wav",
+          "size_in_bytes": 555646212
         }
-      ]
+      ],
+      "image": "https://radio.rumble.nyc/images/radio-rumble-nyc-ep-2-uk garage.png",
+      "content_html": "<div id=\"https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw\" class=\"json-feed-item\">\n\n<h3>rumble-nyc-radio-episode-02-uk-garage-raw</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"https://radio.rumble.nyc/images/radio-rumble-nyc-ep-2-uk garage.png\">\n\t\t\t<source src=\"https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav\" type=\"audio/x-wav\"/>\n\t\t</audio>\n<p></p>\n\n</div>"
     },
     {
       "id": "https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb",
@@ -60,10 +73,13 @@
       "attachments": [
         {
           "url": "https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav",
-          "mime_type": "audio/x-wav"
+          "mime_type": "audio/x-wav",
+          "size_in_bytes": 487703490
         }
-      ]
+      ],
+      "image": "https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png",
+      "content_html": "<div id=\"https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb\" class=\"json-feed-item\">\n\n<h3>rumble.nyc-radio-episode-1-liquid-dnb</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png\">\n\t\t\t<source src=\"https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav\" type=\"audio/x-wav\"/>\n\t\t</audio>\n<p></p>\n\n</div>"
     }
   ],
-  "icon": "/images/radio-rumble-nyc-logo-1.png"
+  "icon": "https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png"
 }
