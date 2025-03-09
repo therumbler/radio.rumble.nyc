@@ -13,6 +13,14 @@ def _filter_audio_s3_objects(o):
     return False
 
 
+def _s3_object_to_dict(obj):
+    return {
+        "path": obj.key,
+        "content_length": obj.size,
+        "last_modified": obj.last_modified,
+    }
+
+
 def get_audio_from_s3(bucket_name):
     """fetch audio paths from S3 bucket"""
     resource = boto3.resource(
@@ -25,14 +33,5 @@ def get_audio_from_s3(bucket_name):
     bucket = resource.Bucket(bucket_name)
     objects = bucket.objects.limit(400)
 
-    objects = list(filter(_filter_audio_s3_objects, [o for o in objects]))
-    return list(
-        map(
-            lambda o: {
-                "path": o.key,
-                "content_length": o.size,
-                "last_modified": o.last_modified,
-            },
-            objects,
-        )
-    )
+    objects = list(filter(_filter_audio_s3_objects, objects))
+    return list(map(_s3_object_to_dict, objects))
