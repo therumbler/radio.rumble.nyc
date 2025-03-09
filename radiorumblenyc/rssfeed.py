@@ -1,5 +1,4 @@
 from datetime import datetime
-import email
 import email.utils
 import logging
 import xml.etree.ElementTree as ET
@@ -21,14 +20,11 @@ def json_feed_to_rss_xml(json_feed):
     return rss
 
 
-def _date_to_rfc822(iso_datetime):
-    # Convert to RFC-822 format
-    return email.utils.format_datetime(iso_datetime)
-
+def _iso_date_to_rfc822(iso_datetime):
     try:
         dt = datetime.strptime(iso_datetime, "%Y-%m-%dT%H:%M:%SZ")
     except ValueError:
-        dt = datetime.strptime(iso_datetime, "%Y-%m-%dT%H:%M:%S-05:00")
+        dt = datetime.strptime(iso_datetime, "%Y-%m-%dT%H:%M:%S+00:00")
     # Convert to RFC-822 format
     return email.utils.format_datetime(dt)
 
@@ -38,7 +34,7 @@ def _json_feed_item_to_xml_item(json_item):
     title = ET.SubElement(item, "title")
     title.text = json_item["title"]
     pub_date = ET.SubElement(item, "pubDate")
-    pub_date.text = _date_to_rfc822(json_item["date_published"])
+    pub_date.text = _iso_date_to_rfc822(json_item["date_published"])
     guid = ET.SubElement(item, "guid")
     guid.text = json_item["id"]
     guid.attrib["isPermaLink"] = "false"
@@ -76,7 +72,7 @@ def _json_feed_to_rss_channel(json_feed):
     return channel
 
 
-def write_feed(self, rss_feed: ET.Element):
+def write_feed(rss_feed: ET.Element):
     """write an ET.Element object to feed.xml"""
     logger.info("writing feed.xml ...")
     ET.ElementTree(rss_feed).write("feed.xml", encoding="utf-8")
