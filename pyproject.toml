@@ -7,3 +7,8 @@ requires-python = ">=3.13"
 dependencies = [
     "boto3==1.35.99",
 ] # locking boto3 due to Backblaze compatibility https://www.backblaze.com/docs/cloud-storage-use-the-aws-sdk-for-python-with-backblaze-b2
+
+[dependency-groups]
+dev = [
+    "boto3-stubs>=1.37.9",
+]
