@@ -1,3 +1,5 @@
+"""module to turn a JSON Feed dictionary into an RSS feed"""
+
 from datetime import datetime
 import email.utils
 import logging
@@ -7,7 +9,15 @@ import xml.etree.ElementTree as ET
 logger = logging.getLogger(__name__)
 
 
-def json_feed_to_rss_xml(json_feed):
+def json_feed_to_rss_xml(json_feed: dict) -> ET.Element:
+    """
+    Converts a JSON feed to an RSS XML format.
+    Args:
+        json_feed (dict): The JSON feed data to be converted.
+    Returns:
+        xml.etree.ElementTree.Element: The root element of the RSS XML tree.
+    """
+
     rss = ET.Element("rss")
     rss.attrib["version"] = "2.0"
     rss.attrib["xmlns:atom"] = "http://www.w3.org/2005/Atom"
