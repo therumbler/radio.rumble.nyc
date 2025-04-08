@@ -117,20 +117,16 @@ class FeedBuilder:
         return None
 
     def _match_audio_to_image_filepath(self, audio_file_path, image_filepath):
-        logger.info("_match_audio_to_image_filepath")
         image_episode_number = self._filepath_to_episode_number(image_filepath)
         if image_episode_number:
-            logger.info("image_filepath %r", image_filepath)
             audio_episode_number = self._filepath_to_episode_number(audio_file_path)
             if image_episode_number == audio_episode_number:
                 return True
 
         # try to use YYYYMMDD in the filepaths to match
-        logger.info("match by date")
         audio_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", audio_file_path)
         image_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", image_filepath)
         if audio_date_match and image_date_match:
-            logger.info("they match %s %s!", audio_file_path, image_filepath)
             return audio_date_match.group() == image_date_match.group()
         return False
 
@@ -140,6 +136,8 @@ class FeedBuilder:
                 image_filepath = f"{dir_name}/{filename}"
                 if self._match_audio_to_image_filepath(audio_filepath, image_filepath):
                     return f"{self.BASE_URL}/{image_filepath.replace("./", "")}"
+
+        logger.warning("no image found for %s", audio_filepath)
 
     def _item_html(self, **item):
 
@@ -155,27 +153,41 @@ class FeedBuilder:
 </div>
         """.strip()
 
+    def _radio_rumble_slug_to_title(self, slug):
+        episode_number = re.search(r"(\d+)", slug).group(1)
+        episode_name = re.search(r"(\d+)-(.+)", slug).group(2).replace("-", " ").title()
+        return f"Episode {episode_number}: {episode_name}"
+
+    def _title_from_slug(self, slug):
+        if "radio-rumble-episode" in slug:
+            return self._radio_rumble_slug_to_title(slug)
+        title = slug.replace("-", " ")
+        title = title.replace("_", " ")
+        title = title.title()
+        return title
+
     def _audio_filepath_to_json_feed_item(self, filepath):
+        logger.info("processing filepath %s", filepath)
         slug = self._audio_filepath_to_slug(filepath)
         if not slug:
             logger.error("no slug for %s", filepath)
             return
         date_published = self._date_published_from_filepath(filepath)
-        logger.debug("date_published %s", date_published)
 
         item_url = self._filepath_to_item_url(filepath)
         attachments = self._filepath_to_attachment(filepath)
         image = self._audio_filepath_to_image(filepath)
+        title = self._title_from_slug(slug)
+        logger.debug("title: %s", title)
         item = {
             "id": item_url,
             "url": item_url,
-            "title": slug,
+            "title": title,
             "date_published": date_published,
             "attachments": attachments,
             "image": image,
         }
         item["content_html"] = self._item_html(**item)
-        logger.info("content_html: %s", item["content_html"])
         return item
 
     @classmethod
@@ -185,14 +197,11 @@ class FeedBuilder:
         except AttributeError:
             logger.error("cannot get slug from %s", filepath)
             return None
-        logger.debug("slug %s", slug)
         return slug
 
     @classmethod
     def _filepath_to_item_url(cls, filepath):
         episode_path = re.search(r"audio\/(.*)\.", filepath).group(1)
-
-        logger.debug("episode_path: %s", episode_path)
         return f"{cls.BASE_URL}/{episode_path}"
 
     @classmethod
@@ -424,8 +433,9 @@ def main():
     """kick it all off"""
     logging.basicConfig(stream=sys.stdout, level="INFO")
     builder = FeedBuilder()
-    # feed = builder.build(write_files=True)
-    builder.sync_with_s3()
+    feed = builder.build(write_files=True)
+    # print(feed)
+    # builder.sync_with_s3()
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-02-uk-garage-raw.wav"
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav"
 
