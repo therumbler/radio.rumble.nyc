@@ -22,6 +22,7 @@ class FeedBuilder:
     """Builds XML and JSON feeds for radio.rumble.nyc"""
 
     BASE_URL = "https://radio.rumble.nyc"
+    AUDIO_BASE_URL = "https://f002.backblazeb2.com/file/rumble-nyc-radio"
 
     def __init__(self):
         self._bucket_name = "rumble-nyc-radio"
@@ -46,6 +47,7 @@ class FeedBuilder:
             return "audio/x-wav"
         if "m4a" in ext or "aac" in ext:
             return "audio/mp4"
+            # return "audio/mp4a-latm"
         logger.error("no mime_type found for %s", ext)
         return "unknown"
 
@@ -167,7 +169,7 @@ class FeedBuilder:
         return title
 
     def _audio_filepath_to_json_feed_item(self, filepath):
-        logger.info("processing filepath %s", filepath)
+        logger.info("processing %s", filepath)
         slug = self._audio_filepath_to_slug(filepath)
         if not slug:
             logger.error("no slug for %s", filepath)
@@ -177,6 +179,7 @@ class FeedBuilder:
         item_url = self._filepath_to_item_url(filepath)
         attachments = self._filepath_to_attachment(filepath)
         image = self._audio_filepath_to_image(filepath)
+        logger.info("image: %s", image)
         title = self._title_from_slug(slug)
         logger.debug("title: %s", title)
         item = {
@@ -207,7 +210,7 @@ class FeedBuilder:
     @classmethod
     def _filepath_to_attachment_url(cls, filepath):
         public_path = re.search(r"audio\/..*", filepath).group()
-        return f"{cls.BASE_URL}/{public_path}"
+        return f"{cls.AUDIO_BASE_URL}/{public_path}"
 
     @classmethod
     def _filter_audio_s3_objects(cls, o):
@@ -432,10 +435,12 @@ class FeedBuilder:
 def main():
     """kick it all off"""
     logging.basicConfig(stream=sys.stdout, level="INFO")
+
     builder = FeedBuilder()
+    # builder.sync_with_s3()
     feed = builder.build(write_files=True)
     # print(feed)
-    # builder.sync_with_s3()
+
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-02-uk-garage-raw.wav"
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav"
 

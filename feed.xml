@@ -6,39 +6,46 @@
 		<atom:link href="https://radio.rumble.nyc/feed.xml" rel="self" type="application/rss+xml" />
 		<itunes:image href="https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png" />
 		<item>
-			<title>radio-rumble-episode-05-house</title>
+			<title>Episode 06: House</title>
+			<pubDate>Mon, 07 Apr 2025 23:39:10 -0000</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/2025/radio-rumble-episode-06-house</guid>
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-06-house.m4a" type="audio/mp4" length="63790740" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-06-house.m4a" type="audio/mp4" />
+		</item>
+		<item>
+			<title>Episode 05: House</title>
 			<pubDate>Thu, 06 Mar 2025 23:31:08 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2025/radio-rumble-episode-05-house</guid>
-			<enclosure url="https://radio.rumble.nyc/audio/2025/radio-rumble-episode-05-house.m4a" type="audio/mp4" length="42931494" />
-			<media:content url="https://radio.rumble.nyc/audio/2025/radio-rumble-episode-05-house.m4a" type="audio/mp4" />
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-05-house.m4a" type="audio/mp4" length="42931494" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-05-house.m4a" type="audio/mp4" />
 		</item>
 		<item>
-			<title>radio-rumble-04-house</title>
+			<title>Radio Rumble 04 House</title>
 			<pubDate>Fri, 13 Sep 2024 00:32:02 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2024/radio-rumble-04-house</guid>
-			<enclosure url="https://radio.rumble.nyc/audio/2024/radio-rumble-04-house.m4a" type="audio/mp4" length="47845453" />
-			<media:content url="https://radio.rumble.nyc/audio/2024/radio-rumble-04-house.m4a" type="audio/mp4" />
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/radio-rumble-04-house.m4a" type="audio/mp4" length="47845453" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/radio-rumble-04-house.m4a" type="audio/mp4" />
 		</item>
 		<item>
-			<title>house_with_benji_20240809</title>
+			<title>House With Benji 20240809</title>
 			<pubDate>Sat, 10 Aug 2024 00:43:46 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2024/house_with_benji_20240809</guid>
-			<enclosure url="https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" length="91144611" />
-			<media:content url="https://radio.rumble.nyc/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" />
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" length="91144611" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg" />
 		</item>
 		<item>
-			<title>rumble-nyc-radio-episode-02-uk-garage-raw</title>
+			<title>Rumble Nyc Radio Episode 02 Uk Garage Raw</title>
 			<pubDate>Fri, 01 Dec 2023 14:51:11 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw</guid>
-			<enclosure url="https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" length="555646212" />
-			<media:content url="https://radio.rumble.nyc/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" />
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" length="555646212" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav" />
 		</item>
 		<item>
-			<title>rumble.nyc-radio-episode-1-liquid-dnb</title>
+			<title>Rumble.Nyc Radio Episode 1 Liquid Dnb</title>
 			<pubDate>Sat, 07 Oct 2023 23:12:56 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb</guid>
-			<enclosure url="https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" length="487703490" />
-			<media:content url="https://radio.rumble.nyc/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" />
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" length="487703490" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav" />
 		</item>
 	</channel>
 </rss>
