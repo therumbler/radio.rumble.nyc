@@ -66,11 +66,19 @@ def get_audio_from_s3(bucket_name):
     return list(map(_s3_object_to_dict, objects))
 
 
+def _local_filepath_to_s3_filepath(filepath):
+    """convert a local filepath to an s3 filepath"""
+    if filepath.startswith("./"):
+        filepath = filepath[2:]
+    return filepath.replace("./public/", "")
+
+
 def sync_web(bucket_name):
     """send web elements to s3"""
-    items = ["./public/index.html", "./public/feed.json", "./public/feed.xml"]
+    local_filepaths = ["./public/index.html", "./public/feed.json", "./public/feed.xml"]
     resource = _get_s3_resource()
-    for filepath in items:
+    for local_filepath in local_filepaths:
+        filepath = _local_filepath_to_s3_filepath(local_filepath)
         obj = resource.Object(bucket_name, filepath)
         content_type = _filename_to_content_type(filepath)
         logger.info("uploading %s  %s ...", content_type, filepath)
