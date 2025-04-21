@@ -18,5 +18,5 @@ def json_feed_to_html(json_feed: dict) -> str:
 def write_html(html: str):
     """write index.html"""
     logger.info("writing index.html ...")
-    with open("index.html", "w", encoding="utf-8") as f:
+    with open("./public/index.html", "w", encoding="utf-8") as f:
         f.write(html)

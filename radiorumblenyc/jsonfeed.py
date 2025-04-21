@@ -168,5 +168,5 @@ def build_feed(audio_paths):
 def write_feed(json_feed):
     """write json feed to feed.json"""
     logger.info("writing feed.json ...")
-    with open("feed.json", "w", encoding="utf-8") as f:
+    with open("./public/feed.json", "w", encoding="utf-8") as f:
         f.write(json.dumps(json_feed, indent=2))

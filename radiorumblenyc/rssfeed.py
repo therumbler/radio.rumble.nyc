@@ -85,4 +85,4 @@ def _json_feed_to_rss_channel(json_feed):
 def write_feed(rss_feed: ET.Element):
     """write an ET.Element object to feed.xml"""
     logger.info("writing feed.xml ...")
-    ET.ElementTree(rss_feed).write("feed.xml", encoding="utf-8")
+    ET.ElementTree(rss_feed).write("./public/feed.xml", encoding="utf-8")
