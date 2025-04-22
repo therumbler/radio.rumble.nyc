@@ -104,7 +104,7 @@ def _match_audio_to_image_filepath(audio_file_path, image_filepath):
 
 
 def _audio_filepath_to_image(audio_filepath):
-    for dir_name, _dirs, files in os.walk("./images"):
+    for dir_name, _dirs, files in os.walk("./public/images"):
         for filename in files:
             image_filepath = f"{dir_name}/{filename}"
             if _match_audio_to_image_filepath(audio_filepath, image_filepath):

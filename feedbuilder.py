@@ -133,7 +133,7 @@ class FeedBuilder:
         return False
 
     def _audio_filepath_to_image(self, audio_filepath):
-        for dir_name, _dirs, files in os.walk("./images"):
+        for dir_name, _dirs, files in os.walk("./public/images"):
             for filename in files:
                 image_filepath = f"{dir_name}/{filename}"
                 if self._match_audio_to_image_filepath(audio_filepath, image_filepath):
@@ -335,14 +335,14 @@ class FeedBuilder:
 
     def _write_files(self, json_feed, rss, html):
         logger.info("writing feed.json ...")
-        with open("feed.json", "w", encoding="utf-8") as f:
+        with open("./public/feed.json", "w", encoding="utf-8") as f:
             f.write(json.dumps(json_feed, indent=2))
 
         logger.info("writing feed.xml ...")
-        ET.ElementTree(rss).write("feed.xml", encoding="utf-8")
+        ET.ElementTree(rss).write("./public/feed.xml", encoding="utf-8")
 
         logger.info("writing index.html ...")
-        with open("index.html", "w", encoding="utf-8") as f:
+        with open("./public/index.html", "w", encoding="utf-8") as f:
             f.write(html)
         return json_feed
 
