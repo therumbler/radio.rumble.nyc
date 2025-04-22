@@ -93,7 +93,14 @@ def _match_audio_to_image_filepath(audio_file_path, image_filepath):
     if image_episode_number:
         audio_episode_number = _filepath_to_episode_number(audio_file_path)
         if image_episode_number == audio_episode_number:
+
             return True
+    # try to use YYYYMMDD in the filepaths to match
+    audio_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", audio_file_path)
+    image_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", image_filepath)
+    if audio_date_match and image_date_match:
+        return audio_date_match.group() == image_date_match.group()
+    return False
 
 
 def _audio_filepath_to_image(audio_filepath):
