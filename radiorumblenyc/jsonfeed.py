@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 BASE_URL = "https://radio.rumble.nyc"
+AUDIO_BASE_URL = "https://f002.backblazeb2.com/file/rumble-nyc-radio"
 
 
 def _filepath_to_item_url(filepath):
@@ -105,7 +106,22 @@ def _audio_filepath_to_image(audio_filepath):
 
 def _filepath_to_attachment_url(filepath):
     public_path = re.search(r"audio\/..*", filepath).group()
-    return f"{BASE_URL}/{public_path}"
+    return f"{AUDIO_BASE_URL}/{public_path}"
+
+
+def _radio_rumble_slug_to_title(slug):
+    episode_number = re.search(r"(\d+)", slug).group(1)
+    episode_name = re.search(r"(\d+)-(.+)", slug).group(2).replace("-", " ").title()
+    return f"Episode {episode_number}: {episode_name}"
+
+
+def _title_from_slug(slug):
+    if "radio-rumble-episode" in slug:
+        return _radio_rumble_slug_to_title(slug)
+    title = slug.replace("-", " ")
+    title = title.replace("_", " ")
+    title = title.title()
+    return title
 
 
 def _audio_filepath_to_slug(filepath):
@@ -132,7 +148,7 @@ def _object_to_json_feed_item(obj):
     item = {
         "id": item_url,
         "url": item_url,
-        "title": slug,
+        "title": _title_from_slug(slug),
         "date_published": date_published,
         "attachments": attachments,
         "image": image,
