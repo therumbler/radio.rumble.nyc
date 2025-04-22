@@ -22,6 +22,7 @@ class FeedBuilder:
     """Builds XML and JSON feeds for radio.rumble.nyc"""
 
     BASE_URL = "https://radio.rumble.nyc"
+    AUDIO_BASE_URL = "https://f002.backblazeb2.com/file/rumble-nyc-radio"
 
     def __init__(self):
         self._bucket_name = "rumble-nyc-radio"
@@ -46,6 +47,7 @@ class FeedBuilder:
             return "audio/x-wav"
         if "m4a" in ext or "aac" in ext:
             return "audio/mp4"
+            # return "audio/mp4a-latm"
         logger.error("no mime_type found for %s", ext)
         return "unknown"
 
@@ -117,29 +119,27 @@ class FeedBuilder:
         return None
 
     def _match_audio_to_image_filepath(self, audio_file_path, image_filepath):
-        logger.info("_match_audio_to_image_filepath")
         image_episode_number = self._filepath_to_episode_number(image_filepath)
         if image_episode_number:
-            logger.info("image_filepath %r", image_filepath)
             audio_episode_number = self._filepath_to_episode_number(audio_file_path)
             if image_episode_number == audio_episode_number:
                 return True
 
         # try to use YYYYMMDD in the filepaths to match
-        logger.info("match by date")
         audio_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", audio_file_path)
         image_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", image_filepath)
         if audio_date_match and image_date_match:
-            logger.info("they match %s %s!", audio_file_path, image_filepath)
             return audio_date_match.group() == image_date_match.group()
         return False
 
     def _audio_filepath_to_image(self, audio_filepath):
-        for dir_name, _dirs, files in os.walk("./images"):
+        for dir_name, _dirs, files in os.walk("./public/images"):
             for filename in files:
                 image_filepath = f"{dir_name}/{filename}"
                 if self._match_audio_to_image_filepath(audio_filepath, image_filepath):
                     return f"{self.BASE_URL}/{image_filepath.replace("./", "")}"
+
+        logger.warning("no image found for %s", audio_filepath)
 
     def _item_html(self, **item):
 
@@ -155,27 +155,42 @@ class FeedBuilder:
 </div>
         """.strip()
 
+    def _radio_rumble_slug_to_title(self, slug):
+        episode_number = re.search(r"(\d+)", slug).group(1)
+        episode_name = re.search(r"(\d+)-(.+)", slug).group(2).replace("-", " ").title()
+        return f"Episode {episode_number}: {episode_name}"
+
+    def _title_from_slug(self, slug):
+        if "radio-rumble-episode" in slug:
+            return self._radio_rumble_slug_to_title(slug)
+        title = slug.replace("-", " ")
+        title = title.replace("_", " ")
+        title = title.title()
+        return title
+
     def _audio_filepath_to_json_feed_item(self, filepath):
+        logger.info("processing %s", filepath)
         slug = self._audio_filepath_to_slug(filepath)
         if not slug:
             logger.error("no slug for %s", filepath)
             return
         date_published = self._date_published_from_filepath(filepath)
-        logger.debug("date_published %s", date_published)
 
         item_url = self._filepath_to_item_url(filepath)
         attachments = self._filepath_to_attachment(filepath)
         image = self._audio_filepath_to_image(filepath)
+        logger.info("image: %s", image)
+        title = self._title_from_slug(slug)
+        logger.debug("title: %s", title)
         item = {
             "id": item_url,
             "url": item_url,
-            "title": slug,
+            "title": title,
             "date_published": date_published,
             "attachments": attachments,
             "image": image,
         }
         item["content_html"] = self._item_html(**item)
-        logger.info("content_html: %s", item["content_html"])
         return item
 
     @classmethod
@@ -185,20 +200,17 @@ class FeedBuilder:
         except AttributeError:
             logger.error("cannot get slug from %s", filepath)
             return None
-        logger.debug("slug %s", slug)
         return slug
 
     @classmethod
     def _filepath_to_item_url(cls, filepath):
         episode_path = re.search(r"audio\/(.*)\.", filepath).group(1)
-
-        logger.debug("episode_path: %s", episode_path)
         return f"{cls.BASE_URL}/{episode_path}"
 
     @classmethod
     def _filepath_to_attachment_url(cls, filepath):
         public_path = re.search(r"audio\/..*", filepath).group()
-        return f"{cls.BASE_URL}/{public_path}"
+        return f"{cls.AUDIO_BASE_URL}/{public_path}"
 
     @classmethod
     def _filter_audio_s3_objects(cls, o):
@@ -323,14 +335,14 @@ class FeedBuilder:
 
     def _write_files(self, json_feed, rss, html):
         logger.info("writing feed.json ...")
-        with open("feed.json", "w", encoding="utf-8") as f:
+        with open("./public/feed.json", "w", encoding="utf-8") as f:
             f.write(json.dumps(json_feed, indent=2))
 
         logger.info("writing feed.xml ...")
-        ET.ElementTree(rss).write("feed.xml", encoding="utf-8")
+        ET.ElementTree(rss).write("./public/feed.xml", encoding="utf-8")
 
         logger.info("writing index.html ...")
-        with open("index.html", "w", encoding="utf-8") as f:
+        with open("./public/index.html", "w", encoding="utf-8") as f:
             f.write(html)
         return json_feed
 
@@ -423,9 +435,12 @@ class FeedBuilder:
 def main():
     """kick it all off"""
     logging.basicConfig(stream=sys.stdout, level="INFO")
+
     builder = FeedBuilder()
-    # feed = builder.build(write_files=True)
-    builder.sync_with_s3()
+    # builder.sync_with_s3()
+    feed = builder.build(write_files=True)
+    # print(feed)
+
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-02-uk-garage-raw.wav"
     "https://radio.rumble.nyc/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav"
 
