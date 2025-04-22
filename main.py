@@ -12,7 +12,7 @@ logger = logging.getLogger(__name__)
 
 def main():
     """kick it all off"""
-    logging.basicConfig(stream=sys.stdout, level="DEBUG")
+    logging.basicConfig(stream=sys.stdout, level="INFO")
     logger.info("starting main...")
     bucket_name = "rumble-nyc-radio"
 
