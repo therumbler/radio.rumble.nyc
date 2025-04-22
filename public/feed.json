@@ -6,6 +6,21 @@
   "feed_url": "https://radio.rumble.nyc/feed.json",
   "items": [
     {
+      "id": "https://radio.rumble.nyc/2025/radio-rumble-ep-8-springtime-house",
+      "url": "https://radio.rumble.nyc/2025/radio-rumble-ep-8-springtime-house",
+      "title": "Radio Rumble Ep 8 Springtime House",
+      "date_published": "2025-04-22T15:00:33+00:00",
+      "attachments": [
+        {
+          "url": "https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-ep-8-springtime-house.m4a",
+          "mime_type": "audio/mp4",
+          "size_in_bytes": 56909839
+        }
+      ],
+      "image": null,
+      "content_html": "<div id=\"https://radio.rumble.nyc/2025/radio-rumble-ep-8-springtime-house\" class=\"json-feed-item\">\n<h3>Radio Rumble Ep 8 Springtime House</h3>\n<audio controls class=\"video-js\"  preload=\"metadata\" data-setup='{\"fluid\": true}' poster=\"None\">\n    <source src=\"https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-ep-8-springtime-house.m4a\" type=\"audio/mp4\"/>\n</audio>\n<p></p>\n</div>"
+    },
+    {
       "id": "https://radio.rumble.nyc/2025/radio-rumble-episode-07-monday-evening-house",
       "url": "https://radio.rumble.nyc/2025/radio-rumble-episode-07-monday-evening-house",
       "title": "Episode 07: Monday Evening House",

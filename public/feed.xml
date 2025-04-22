@@ -6,6 +6,13 @@
 		<atom:link href="https://radio.rumble.nyc/feed.xml" rel="self" type="application/rss+xml" />
 		<itunes:image href="https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png" />
 		<item>
+			<title>Radio Rumble Ep 8 Springtime House</title>
+			<pubDate>Tue, 22 Apr 2025 15:00:33 -0000</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/2025/radio-rumble-ep-8-springtime-house</guid>
+			<enclosure url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-ep-8-springtime-house.m4a" type="audio/mp4" length="56909839" />
+			<media:content url="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-ep-8-springtime-house.m4a" type="audio/mp4" />
+		</item>
+		<item>
 			<title>Episode 07: Monday Evening House</title>
 			<pubDate>Mon, 21 Apr 2025 21:43:05 -0000</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/2025/radio-rumble-episode-07-monday-evening-house</guid>
