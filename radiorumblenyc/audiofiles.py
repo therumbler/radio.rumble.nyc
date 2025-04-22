@@ -6,8 +6,8 @@ import re
 import sys
 from typing import List, Optional
 
-from mutagen.mp4 import MP4
-from mutagen.mp4 import MP4Cover
+from mutagen.mp4 import MP4, MP4Cover, AtomDataType
+
 
 logger = logging.getLogger(__name__)
 
@@ -74,17 +74,18 @@ def _get_image_type_from_path(filepath):
     """
     Get the image type from the file path.
     """
+    image_type = None
     if filepath.endswith(".jpg"):
-        return "image/jpeg"
+        image_type = AtomDataType.JPEG
     if filepath.endswith(".jpeg"):
-        return "image/jpeg"
+        image_type = AtomDataType.JPEG
     elif filepath.endswith(".png"):
-        return "image/png"
+        image_type = AtomDataType.PNG
     elif filepath.endswith(".gif"):
-        return "image/gif"
+        image_type = AtomDataType.GIF
     else:
-        logger.error(f"Unsupported image type: {filepath}")
-        return None
+        logger.error("Unsupported image type: %s", filepath)
+    return image_type
 
 
 def _update_audio_file_with_image(audio_file_path):
@@ -93,14 +94,17 @@ def _update_audio_file_with_image(audio_file_path):
         logger.error("Image not found for %s", audio_file_path)
         return
 
+    audio_file = MP4(audio_file_path)
+    if audio_file["covr"]:
+        logger.info("File already has covr: %s", audio_file_path)
+        return
     logger.info("updating %s with image %s", audio_file_path, image_path)
     with open(image_path, "rb") as img_file:
-        audio_file = MP4(audio_file_path)
-        logger.info("audio file %s", audio_file)
         image_data = img_file.read()
+        imageformat = _get_image_type_from_path(image_path)
         cover = MP4Cover(
             image_data,
-            imageformat=_get_image_type_from_path(image_path).encode(),
+            imageformat=imageformat,
         )
 
         audio_file["covr"] = [cover]
