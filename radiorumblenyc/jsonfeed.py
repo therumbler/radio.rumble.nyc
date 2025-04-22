@@ -141,17 +141,17 @@ def _audio_filepath_to_slug(filepath):
     return slug
 
 
-def _object_to_json_feed_item(obj):
-    slug = _audio_filepath_to_slug(obj["path"])
+def _audio_path_to_json_feed_item(audio_path):
+    slug = _audio_filepath_to_slug(audio_path["path"])
     if not slug:
-        logger.error("no slug for %s", obj["path"])
+        logger.error("no slug for %s", audio_path["path"])
         return {}
-    date_published = obj["last_modified"].replace(microsecond=0).isoformat()
+    date_published = audio_path["last_modified"].replace(microsecond=0).isoformat()
     logger.debug("date_published %s", date_published)
 
-    item_url = _filepath_to_item_url(obj["path"])
-    attachments = _object_to_attachment(obj)
-    image = _audio_filepath_to_image(obj["path"])
+    item_url = _filepath_to_item_url(audio_path["path"])
+    attachments = _object_to_attachment(audio_path)
+    image = _audio_filepath_to_image(audio_path["path"])
     item = {
         "id": item_url,
         "url": item_url,
@@ -164,10 +164,10 @@ def _object_to_json_feed_item(obj):
     return item
 
 
-def _json_feed_items_from_audio_paths(objects):
+def _json_feed_items_from_audio_paths(audio_paths):
     items = []
-    for obj in objects:
-        item = _object_to_json_feed_item(obj)
+    for audio_path in audio_paths:
+        item = _audio_path_to_json_feed_item(audio_path)
         if item:
             items.append(item)
     return sorted(items, key=lambda i: i["date_published"], reverse=True)
