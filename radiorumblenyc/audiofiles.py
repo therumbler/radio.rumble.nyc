@@ -96,7 +96,7 @@ def _update_audio_file_with_image(audio_file_path):
 
     audio_file = MP4(audio_file_path)
     if audio_file["covr"]:
-        logger.info("File already has covr: %s", audio_file_path)
+        logger.info("File already has covr. Not updating: %s", audio_file_path)
         return
     logger.info("updating %s with image %s", audio_file_path, image_path)
     with open(image_path, "rb") as img_file:
