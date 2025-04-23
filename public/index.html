@@ -9,95 +9,107 @@
 	<link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
 	<link rel="alternate" type="application/feed+json" title="JSON Feed for Radio Rumble" href="https://radio.rumble.nyc/feed.json" />
 	<link rel="alternate" type="application/rss+xml" title="RSS/XML Feed for Radio Rumble" href="https://radio.rumble.nyc/feed.xml" />
-	<style>
-		body {
-			font-family: "Assistant";
-			background: black;
-			color:white;
-		}
-		h1 {
-			font-family: "Dela Gothic One";
-		}
-		#main {
-			margin-right: auto;
-			margin-left: auto;
-			max-width: 720px;
-		}
-		date {
-			display:block;
-		}
-		audio {
-			width: 100%;
-		}
-	</style>
+	
+	<link rel="stylesheet" href="/css/podcast.css">
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.12.3/cdn.min.js" defer></script>
 </head>
 <body>
 	<div id="main">
-		<h1>Radio Rumble</h1>
-
 		<h2 id="live"></h2>
 		<div id="livePlayerContainer" style="display:none">
-			<audio controls>
+			<audio controls id="live-stream">
 				<source src="https://icecast.smartdata.link/stream" type="audio/mpeg" />
 			</audio>
 		</div>
 
-		<h2>Previous episodes</h2>
-        <div id="https://radio.rumble.nyc/2025/radio-rumble-ep-8-springtime-house" class="json-feed-item">
-<h3>Radio Rumble Ep 8 Springtime House</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="None">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-ep-8-springtime-house.m4a" type="audio/mp4"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2025/radio-rumble-episode-07-monday-evening-house" class="json-feed-item">
-<h3>Episode 07: Monday Evening House</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/radio-rumble-ep-7-evening-house.jpeg">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-07-monday-evening-house.m4a" type="audio/mp4"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2025/radio-rumble-episode-06-house" class="json-feed-item">
-<h3>Episode 06: House</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/radio-rumble-ep-6-house.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-06-house.m4a" type="audio/mp4"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2025/radio-rumble-episode-05-house" class="json-feed-item">
-<h3>Episode 05: House</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/radio-rumble-ep-5-house.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2025/radio-rumble-episode-05-house.m4a" type="audio/mp4"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2024/radio-rumble-04-house" class="json-feed-item">
-<h3>Radio Rumble 04 House</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/Radio-Rumble-Ep-04-House-20240912.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/radio-rumble-04-house.m4a" type="audio/mp4"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2024/house_with_benji_20240809" class="json-feed-item">
-<h3>House With Benji 20240809</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/house_with_benji_20240809_logo-v2.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2024/house_with_benji_20240809.mp3" type="audio/mpeg"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2023/rumble-nyc-radio-episode-02-uk-garage-raw" class="json-feed-item">
-<h3>Rumble Nyc Radio Episode 02 Uk Garage Raw</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/radio-rumble-nyc-ep-2-uk garage.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble-nyc-radio-episode-02-uk-garage-raw.wav" type="audio/x-wav"/>
-</audio>
-<p></p>
-</div>
-<div id="https://radio.rumble.nyc/2023/rumble.nyc-radio-episode-1-liquid-dnb" class="json-feed-item">
-<h3>Rumble.Nyc Radio Episode 1 Liquid Dnb</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{"fluid": true}' poster="https://radio.rumble.nyc/images/radio-rumble-nyc-logo-1.png">
-    <source src="https://f002.backblazeb2.com/file/rumble-nyc-radio/audio/2023/rumble.nyc-radio-episode-1-liquid-dnb.wav" type="audio/x-wav"/>
-</audio>
-<p></p>
+
+		<div class="container" x-data="podcastApp()">
+			<div x-show="loading" class="loading">
+			  <div class="loading-spinner"></div>
+			  Loading feed...
+			</div>
+			
+			<template x-if="!loading && feed">
+			  <div>
+				<div class="playlist-header">
+				  <h1 class="playlist-title" x-text="feed.title"></h1>
+				  <div x-text="`${feed.items.length} episodes`"></div>
+				</div>
+				
+				<div class="track-list">
+				  <template x-for="(episode, index) in feed.items" :key="episode.id">
+					<div 
+					  class="track" 
+					  :class="{ 'active': currentEpisodeIndex === index }"
+					  @click="playTrack(index)"
+					>
+					  <div class="track-image-container">
+						<img class="track-image" :src="episode.image" alt="Episode cover">
+						<div class="track-image-overlay">
+						  <button class="play-button" @click.stop="togglePlayPause(index)">
+							<template x-if="isPlaying && currentEpisodeIndex === index">
+							  <span>⏸&#xFE0E;</span>
+							</template>
+							<template x-if="!isPlaying || currentEpisodeIndex !== index">
+							  <span>▶</span>
+							</template>
+						  </button>
+						</div>
+					  </div>
+					  <div class="track-info">
+						<div class="track-name" x-text="episode.title"></div>
+					  </div>
+					</div>
+				  </template>
+				</div>
+				
+				<template x-if="currentEpisode">
+				  <div class="now-playing">
+					<img class="now-playing-image" :src="currentEpisode.image" alt="Episode cover">
+					<div class="now-playing-info">
+					  <div class="now-playing-title" x-text="currentEpisode.title"></div>
+					 
+					  
+					  <div class="progress-container" @click="seek($event)">
+						<div class="progress-bar" :style="`width: ${progress}%`"></div>
+					  </div>
+					  
+					  <div class="time-info">
+						<div x-text="formatTime(currentTime)"></div>
+						<div x-text="formatTime(duration)"></div>
+					  </div>
+					</div>
+				  </div>
+				</template>
+				
+				<template x-if="currentEpisode">
+				  <div class="player-controls">
+					<button class="player-control-button" @click="previousTrack()">⏮&#xFE0E;</button>
+					<button class="player-control-button play-pause" @click="togglePlayPause()">
+					  <template x-if="isPlaying">
+						<span>⏸&#xFE0E;</span>
+					  </template>
+					  <template x-if="!isPlaying">
+						<span>▶</span>
+					  </template>
+					</button>
+					<button class="player-control-button" @click="nextTrack()">⏭&#xFE0E;</button>
+				  </div>
+				</template>
+			  </div>
+			</template>
+			
+			<template x-if="!loading && error">
+			  <div>
+				<h2>Error loading playlist</h2>
+				<p x-text="error"></p>
+			  </div>
+			</template>
+		  </div>
+		  
+		  <script src="/js/podcastApp.js?v=0.0.1"></script>
+
+	
 </div>
 	</div>
 	 <script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
