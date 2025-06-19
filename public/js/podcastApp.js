@@ -126,6 +126,14 @@ function podcastApp() {
       navigator.mediaSession.setActionHandler("nexttrack", () =>
         this.nextTrack()
       );
+      navigator.mediaSession.setActionHandler("seekto", (details) => {
+        if (details.seekTime) {
+          this.audio.currentTime = details.seekTime;
+        } else {
+          // If no seekTime is provided, we can use the current time
+          this.audio.currentTime = this.audio.currentTime;
+        }
+      });
     },
     async playEpisode(index) {
       if (index === this.currentEpisodeIndex && this.isPlaying) {
