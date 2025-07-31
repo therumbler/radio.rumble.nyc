@@ -48,6 +48,8 @@ def _json_feed_item_to_xml_item(json_item):
     guid = ET.SubElement(item, "guid")
     guid.text = json_item["id"]
     guid.attrib["isPermaLink"] = "false"
+    itunes_image = ET.SubElement(item, "itunes:image")
+    itunes_image.attrib["href"] = json_item["image"]
     for att in json_item["attachments"]:
         enclosure = ET.SubElement(item, "enclosure")
         enclosure.attrib["url"] = att["url"]
