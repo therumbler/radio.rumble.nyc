@@ -1,0 +1,16 @@
+{
+  "name": "🫖 Tea Time from the Triangle 🌳🌳",
+  "short_name": "TTT",
+  "description": "The pulse of Brooklyn's Williamsburg and Greenpoint neighborhoods, hosted by XinXinSurprise.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#666666",
+  "theme_color": "#C05BB1",
+  "icons": [
+    {
+      "src": "images/ittt_logo_v1.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
