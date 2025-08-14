@@ -106,13 +106,14 @@
       <img src="./images/ttt_logo_v1.png" title="TTT Logo"/>
     </section> -->
 
-    <section class="highlight">
-      <strong>Live:</strong> <br>
-      <span> </span>
-    </section>
-    <section class="podcast-player">
+    
+    <section id="livePlayerContainer" class="podcast-player" style="display:none">
+      <section class="highlight">
+        <strong>Live!</strong> <br>
+        <span> </span>
+      </section>
       <h2 id="live"></h2>
-      <div id="livePlayerContainer">
+      <div>
         <audio controls>
           <source src="https://icecast.smartdata.link/stream" type="audio/mpeg" />
         </audio>
@@ -122,9 +123,9 @@
       <strong>Latest episode:</strong> <br>
       <span>
         <div>
-          <h2>Episode 1</h2>
+          <h2>Episode 2</h2>
             <audio controls>
-              <source src="./audio/ttt_episode_01.mp3" type="audio/mpeg">
+              <source src="./audio/ttt_episode_02.mp3" type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>
         </div>
@@ -141,5 +142,6 @@
   <footer>
     &copy; 2025 Tea Time from the Triangle &mdash; Brooklyn, NY
   </footer>
+  <script src="./js/ttt.js"></script>
 </body>
 </html>
