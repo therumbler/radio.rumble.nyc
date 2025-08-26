@@ -1,0 +1,38 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:media="http://search.yahoo.com/mrss/">
+	<channel>
+		<title>Tea Time from the Triangle</title>
+		<description>Bringing you the pulse of Brooklyn's Williamsburg and Greenpoint neighborhoods. We broadcast live from 11249, every Wednesday night at 8pm ET.</description>
+		<link>https://radio.rumble.nyc/ttt/</link>
+		<atom:link href="https://radio.rumble.nyc/ttt/feed.xml" rel="self" type="application/rss+xml" />
+		<itunes:image href="https://radio.rumble.nyc/ttt/images/ttt_logo_v1.png" />
+        <language>en-us</language>
+        <itunes:owner>
+            <itunes:name>XinXin</itunes:name>
+            <itunes:email>contact@rumble.nyc</itunes:email>
+        </itunes:owner>
+        <itunes:author>XinXin</itunes:author>
+        <itunes:category text="News" />
+        <itunes:explicit>false</itunes:explicit>
+		<item>
+			<title>TTT Episode 3</title>
+			<pubDate>Tue, 26 Aug 2025 08:24:33 -0400</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/ttt/episode-03</guid>
+			<enclosure url="https://radio.rumble.nyc/ttt/audio/ttt_episode_03.mp3" type="audio/mpeg" length="35970611" />
+			<media:content url="https://radio.rumble.nyc/ttt/audio/ttt_episode_03.mp3" type="audio/mpeg" />
+		</item>
+		<item>
+			<title>TTT Episode 2</title>
+			<pubDate>Wed, 13 Aug 2025 20:00:33 -0400</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/ttt/episode-02</guid>
+			<enclosure url="https://radio.rumble.nyc/ttt/audio/ttt_episode_02.mp3" type="audio/mpeg" length="42713337" />
+			<media:content url="https://radio.rumble.nyc/ttt/audio/ttt_episode_02.mp3" type="audio/mpeg" />
+		</item>
+        <item>
+			<title>TTT Episode 1</title>
+			<pubDate>Thu, 31 Jul 2025 19:47:33 -0400</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/ttt/episode-01</guid>
+			<enclosure url="https://radio.rumble.nyc/ttt/audio/ttt_episode_01.mp3" type="audio/mpeg" length="2175963" />
+			<media:content url="https://radio.rumble.nyc/ttt/audio/ttt_episode_01.mp3" type="audio/mpeg" />
+		</item>
+	</channel>
+</rss>
