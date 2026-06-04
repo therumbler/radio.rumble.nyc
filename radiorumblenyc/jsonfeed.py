@@ -34,12 +34,12 @@ def _object_to_attachment(obj):
 
 def _item_html(**item):
     return f"""
-<div id="{item['id']}" class="json-feed-item">
-<h3>{item['title']}</h3>
-<audio controls class="video-js"  preload="metadata" data-setup='{{"fluid": true}}' poster="{item['image']}">
-    <source src="{item['attachments'][0]['url']}" type="{item['attachments'][0]['mime_type']}"/>
+<div id="{item["id"]}" class="json-feed-item">
+<h3>{item["title"]}</h3>
+<audio controls class="video-js"  preload="metadata" data-setup='{{"fluid": true}}' poster="{item["image"]}">
+    <source src="{item["attachments"][0]["url"]}" type="{item["attachments"][0]["mime_type"]}"/>
 </audio>
-<p><{item.get('description','')}/p>
+<p>{item.get("description", "")}</p>
 </div>
     """.strip()
 
@@ -93,7 +93,6 @@ def _match_audio_to_image_filepath(audio_file_path, image_filepath):
     if image_episode_number:
         audio_episode_number = _filepath_to_episode_number(audio_file_path)
         if image_episode_number == audio_episode_number:
-
             return True
     # try to use YYYYMMDD in the filepaths to match
     audio_date_match = re.search(r"(\d{4})(\d{2})(\d{2})", audio_file_path)
