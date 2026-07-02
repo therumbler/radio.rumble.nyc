@@ -14,6 +14,13 @@
         <itunes:category text="News" />
         <itunes:explicit>false</itunes:explicit>
 		<item>
+			<title>TTT Episode 4 - Sports</title>
+			<pubDate>Wed, 1 Jul 2026 19:45:00 -0400</pubDate>
+			<guid isPermaLink="false">https://radio.rumble.nyc/ttt/episode-04</guid>
+			<enclosure url="https://radio.rumble.nyc/ttt/audio/ttt_episode_04.mp3" type="audio/mpeg" length="44476916" />
+			<media:content url="https://radio.rumble.nyc/ttt/audio/ttt_episode_04.mp3" type="audio/mpeg" />
+		</item>
+		<item>
 			<title>TTT Episode 3</title>
 			<pubDate>Tue, 26 Aug 2025 08:24:33 -0400</pubDate>
 			<guid isPermaLink="false">https://radio.rumble.nyc/ttt/episode-03</guid>
